@@ -13,8 +13,14 @@ jobs:
     strategy:
       matrix:
         django-version:
-          - "5.1.10"
-          - "4.2.17"
+          - "5.2"
+          - "5.1"
+          - "5.0"
+          - "5"
+          - "4.2"
+          - "4.1"
+          - "4.0"
+          - "4"
 
     steps:
       - name: Checkout code
@@ -29,12 +35,6 @@ jobs:
           RCLONE_CONFIG_DEFAULT_PROVIDER: Cloudflare
           RCLONE_CONFIG_DEFAULT_ENDPOINT: ${{ secrets.RCLONE_CONFIG_DEFAULT_ENDPOINT }}
         run: |
-          # Debug: Check if secrets are set (they will be masked in logs)
-          echo "Checking secrets..."
-          test -n "${{ secrets.RCLONE_ACCESS_KEY_ID }}" && echo "✓ RCLONE_ACCESS_KEY_ID is set" || echo "✗ RCLONE_ACCESS_KEY_ID is NOT set"
-          test -n "${{ secrets.RCLONE_SECRET_ACCESS_KEY }}" && echo "✓ RCLONE_SECRET_ACCESS_KEY is set" || echo "✗ RCLONE_SECRET_ACCESS_KEY is NOT set"
-          test -n "${{ secrets.RCLONE_CONFIG_DEFAULT_ENDPOINT }}" && echo "✓ RCLONE_CONFIG_DEFAULT_ENDPOINT is set" || echo "✗ RCLONE_CONFIG_DEFAULT_ENDPOINT is NOT set"
-
           echo "${{ secrets.RCLONE_ACCESS_KEY_ID }}" > /tmp/rclone_access_key_id
           echo "${{ secrets.RCLONE_SECRET_ACCESS_KEY }}" > /tmp/rclone_secret_access_key
 
