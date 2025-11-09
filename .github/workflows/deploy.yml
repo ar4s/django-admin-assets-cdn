@@ -39,6 +39,7 @@ jobs:
           echo "${{ secrets.RCLONE_SECRET_ACCESS_KEY }}" > /tmp/rclone_secret_access_key
 
           docker build \
+            --build-arg PYTHON_VERSION=3.10 \
             --build-arg DJANGO_VERSION="${DJANGO_VERSION}" \
             --build-arg RCLONE_CONFIG_DEFAULT_PROVIDER="${RCLONE_CONFIG_DEFAULT_PROVIDER}" \
             --build-arg RCLONE_CONFIG_DEFAULT_ENDPOINT="${RCLONE_CONFIG_DEFAULT_ENDPOINT}" \

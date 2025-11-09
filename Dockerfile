@@ -1,5 +1,6 @@
-FROM python:3.13-slim AS assets_producer
+ARG PYTHON_VERSION
 
+FROM python:${PYTHON_VERSION}-slim AS assets_producer
 ARG DJANGO_VERSION
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
