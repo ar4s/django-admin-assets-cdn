@@ -29,6 +29,12 @@ jobs:
           RCLONE_CONFIG_DEFAULT_PROVIDER: Cloudflare
           RCLONE_CONFIG_DEFAULT_ENDPOINT: ${{ secrets.RCLONE_CONFIG_DEFAULT_ENDPOINT }}
         run: |
+          # Debug: Check if secrets are set (they will be masked in logs)
+          echo "Checking secrets..."
+          test -n "${{ secrets.RCLONE_ACCESS_KEY_ID }}" && echo "✓ RCLONE_ACCESS_KEY_ID is set" || echo "✗ RCLONE_ACCESS_KEY_ID is NOT set"
+          test -n "${{ secrets.RCLONE_SECRET_ACCESS_KEY }}" && echo "✓ RCLONE_SECRET_ACCESS_KEY is set" || echo "✗ RCLONE_SECRET_ACCESS_KEY is NOT set"
+          test -n "${{ secrets.RCLONE_CONFIG_DEFAULT_ENDPOINT }}" && echo "✓ RCLONE_CONFIG_DEFAULT_ENDPOINT is set" || echo "✗ RCLONE_CONFIG_DEFAULT_ENDPOINT is NOT set"
+
           echo "${{ secrets.RCLONE_ACCESS_KEY_ID }}" > /tmp/rclone_access_key_id
           echo "${{ secrets.RCLONE_SECRET_ACCESS_KEY }}" > /tmp/rclone_secret_access_key
 
@@ -39,6 +45,6 @@ jobs:
             --secret id=rclone_access_key_id,src=/tmp/rclone_access_key_id \
             --secret id=rclone_secret_access_key,src=/tmp/rclone_secret_access_key \
             --progress=plain \
-            -t django-admin-cdn:${{ matrix.django-version }} .
+            .
 
           rm -f /tmp/rclone_access_key_id /tmp/rclone_secret_access_key

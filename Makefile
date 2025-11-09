@@ -5,4 +5,6 @@ deploy:
     --build-arg RCLONE_CONFIG_DEFAULT_ENDPOINT="${RCLONE_CONFIG_DEFAULT_ENDPOINT}" \
 		--secret id=rclone_access_key_id,src=/tmp/rclone_access_key_id \
 		--secret id=rclone_secret_access_key,src=/tmp/rclone_secret_access_key \
+    --progress=plain \
 		.
+
