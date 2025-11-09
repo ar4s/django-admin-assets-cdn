@@ -1,0 +1,38 @@
+name: Build and Deploy Static Assets
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and run Docker container
+        env:
+          DJANGO_VERSION: 5.1.10
+          RCLONE_CONFIG_DEFAULT_PROVIDER: Cloudflare
+          RCLONE_ACCESS_KEY_ID: ${{ secrets.RCLONE_ACCESS_KEY_ID }}
+          RCLONE_SECRET_ACCESS_KEY: ${{ secrets.RCLONE_SECRET_ACCESS_KEY }}
+          RCLONE_CONFIG_DEFAULT_ENDPOINT: ${{ secrets.RCLONE_CONFIG_DEFAULT_ENDPOINT }}
+        run: |
+          docker build \
+            --build-arg DJANGO_VERSION="${DJANGO_VERSION}" \
+            --build-arg RCLONE_CONFIG_DEFAULT_PROVIDER="${RCLONE_CONFIG_DEFAULT_PROVIDER}" \
+            --build-arg RCLONE_ACCESS_KEY_ID="${RCLONE_ACCESS_KEY_ID}" \
+            --build-arg RCLONE_SECRET_ACCESS_KEY="${RCLONE_SECRET_ACCESS_KEY}" \
+            --build-arg RCLONE_CONFIG_DEFAULT_ENDPOINT="${RCLONE_CONFIG_DEFAULT_ENDPOINT}" \
+            --progress=plain \
+            -t django-admin-cdn .
