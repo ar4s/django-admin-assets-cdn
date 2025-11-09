@@ -30,8 +30,8 @@ ENV RCLONE_CONFIG_DEFAULT_ENDPOINT=${RCLONE_CONFIG_DEFAULT_ENDPOINT}
 
 
 COPY --from=assets_producer /app/basic_project/var/static /static
-RUN --mount=type=secret,id=rclone_access_key \
-  --mount=type=secret,id=rclone_secret_key \
-  RCLONE_CONFIG_DEFAULT_ACCESS_KEY_ID="$(cat /run/secrets/rclone_access_key)" \
-  RCLONE_CONFIG_DEFAULT_SECRET_ACCESS_KEY="$(cat /run/secrets/rclone_secret_key)" \
+RUN --mount=type=secret,id=rclone_access_key_id \
+  --mount=type=secret,id=rclone_secret_access_key \
+  RCLONE_CONFIG_DEFAULT_ACCESS_KEY_ID="$(cat /run/secrets/rclone_access_key_id)" \
+  RCLONE_CONFIG_DEFAULT_SECRET_ACCESS_KEY="$(cat /run/secrets/rclone_secret_access_key)" \
   rclone copy /static default:django/${DJANGO_VERSION}
