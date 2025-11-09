@@ -10,6 +10,12 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        django-version:
+          - "5.1.10"
+          - "4.2.17"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,7 +25,7 @@ jobs:
 
       - name: Build and run Docker container
         env:
-          DJANGO_VERSION: 5.1.10
+          DJANGO_VERSION: ${{ matrix.django-version }}
           RCLONE_CONFIG_DEFAULT_PROVIDER: Cloudflare
           RCLONE_ACCESS_KEY_ID: ${{ secrets.RCLONE_ACCESS_KEY_ID }}
           RCLONE_SECRET_ACCESS_KEY: ${{ secrets.RCLONE_SECRET_ACCESS_KEY }}
@@ -32,4 +38,4 @@ jobs:
             --build-arg RCLONE_SECRET_ACCESS_KEY="${RCLONE_SECRET_ACCESS_KEY}" \
             --build-arg RCLONE_CONFIG_DEFAULT_ENDPOINT="${RCLONE_CONFIG_DEFAULT_ENDPOINT}" \
             --progress=plain \
-            -t django-admin-cdn .
+            -t django-admin-cdn:${{ matrix.django-version }} .
